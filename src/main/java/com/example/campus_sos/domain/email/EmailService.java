@@ -23,7 +23,7 @@ public class EmailService {
                     "<p>다음 링크를 클릭해 이메일 인증을 완료해주세요:</p>" +
                             "<a href=\"" + link + "\">이메일 인증</a>", true); // true는 HTML로 보내기 위함
 
-            helper.setFrom("youremail@gmail.com", "Campus SOS"); // 보내는 사람도 명확히
+            helper.setFrom("bugs10613@gmail.com", "Campus SOS");
             mailSender.send(message);
 
 
