@@ -24,6 +24,7 @@ public class Member {
     private String nickname;
 
     private int sosPoint;
+    private String owner;
 
     @Enumerated(EnumType.STRING)
     private MemberLevel level;
