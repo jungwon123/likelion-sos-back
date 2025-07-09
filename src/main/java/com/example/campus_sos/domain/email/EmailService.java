@@ -25,7 +25,7 @@ public class EmailService {
                     "<p>다음 링크를 클릭해 이메일 인증을 완료해주세요:</p>" +
                             "<a href=\"" + link + "\">이메일 인증</a>", true);
 
-            helper.setFrom("bugs0613@naver.com");
+            helper.setFrom("bugs10613@gmail.com");
             mailSender.send(message);
 
         } catch (Exception e) {
