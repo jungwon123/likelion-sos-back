@@ -32,17 +32,18 @@ public class MemberController {
     private final EmailService emailService;
 
     //회원 가입하기
-//    @PostMapping("/api/signup")
-//    public ResponseEntity<?> register(@RequestBody MemberForm form) {
-//        try {
-//            memberService.save(form);
-//            return ResponseEntity.ok(Map.of("status", "success", "message", "회원가입 성공"));
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body(Map.of("status", "fail", "message", e.getMessage()));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(500).body(Map.of("status", "fail", "message", "회원 등록 중 오류가 발생했습니다."));
-//        }
-//    }
+    @PostMapping("/api/signup")
+    public ResponseEntity<?> register(@RequestBody MemberForm form) {
+        try {
+            memberService.save(form);
+            return ResponseEntity.ok(Map.of("status", "success", "message", "회원가입 성공"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("status", "fail", "message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("status", "fail", "message", "회원 등록 중 오류가 발생했습니다."));
+        }
+    }
+
     @PostMapping("/api/register")
     public ResponseEntity<?> register(@RequestBody RegisterForm form) {
         if (memberRepository.existsByEmail(form.getEmail())) {
@@ -54,7 +55,7 @@ public class MemberController {
         emailVerificationService.saveToken(form.getEmail(), token);
 
         // 이메일 전송
-        String link = "http://localhost:8080/api/verify?email=" + form.getEmail() + "&token=" + token;
+        String link = "https://campus-sos.duckdns.org/api/verify?email=" + form.getEmail() + "&token=" + token;
         emailService.sendVerificationEmail(form.getEmail(), link);
 
         return ResponseEntity.ok("인증 메일을 보냈습니다. 메일함을 확인해주세요.");
@@ -66,10 +67,10 @@ public class MemberController {
         if (emailVerificationService.isValid(email, token)) {
             emailVerificationService.markAsVerified(email);
             // 회원가입 폼으로 리다이렉트하면서 인증 정보 전달
-            return new RedirectView("http://localhost:3000/auth?step=signup&verified=true&email=" +
+            return new RedirectView("https://campus-sos.vercel.app/auth?step=signup&verified=true&email=" +
                     URLEncoder.encode(email, StandardCharsets.UTF_8));
         } else {
-            return new RedirectView("http://localhost:3000/auth?step=signup&verified=false&error=invalid_token");
+            return new RedirectView("https://campus-sos.vercel.app/auth?step=signup&verified=false&error=invalid_token");
         }
     }
 
@@ -102,7 +103,7 @@ public class MemberController {
         emailVerificationService.saveToken(email, token);
 
         // React 앱의 비밀번호 재설정 페이지로 리다이렉트
-        String resetLink = "http://localhost:3000/passwordreset?email=" +
+        String resetLink = "https://campus-sos.vercel.app/passwordreset?email=" +
                 URLEncoder.encode(email, StandardCharsets.UTF_8) + "&token=" + token;
         emailService.sendVerificationEmail(email, resetLink);
 
